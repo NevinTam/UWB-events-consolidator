@@ -1,16 +1,19 @@
 package com.example.demo.Event;
 
 import jakarta.persistence.*;
+
+import com.example.demo.user.User;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Class representing events in the application.
  */
 @Entity
-@Table
+@Table(name = "events")
 public class Event {
-    // Unique identifier for the Event
     @Id
     @SequenceGenerator(
             name = "event_sequence",
@@ -21,6 +24,7 @@ public class Event {
             strategy = GenerationType.SEQUENCE,
             generator = "event_sequence"
     )
+  
     private int id;
     // Name of the event
     private String eventName;
@@ -38,6 +42,12 @@ public class Event {
     private String image;
     // Timestamp when the event was created
     private LocalDateTime createdAt;
+    //Use this if you get stack overflow error should fix it
+    //@JsonIgnore
+    @ManyToMany(mappedBy = "events")
+    private Set<User> signedUpUsers = new HashSet<>();
+  
+    // Constructors
 
     /**
      * Constructor for creating an Event with specified details.
@@ -85,6 +95,7 @@ public class Event {
         this.createdAt = LocalDateTime.now();
     }
 
+    // Getters and Setters
     /**
      * Default constructor for creating an empty Event.
      */
@@ -253,6 +264,14 @@ public class Event {
      */
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public Set<User> getSignedUpUsers() {
+        return signedUpUsers;
+    }
+
+    public void setSignedUpUsers(Set<User> signedUpUsers) {
+        this.signedUpUsers = signedUpUsers;
     }
 
     /**

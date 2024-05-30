@@ -1,6 +1,11 @@
 package com.example.demo.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import com.example.demo.Event.Event;
+
+import java.util.Set;
+import java.util.HashSet;
 
 /**
  * Entity class representing a User in the database.
@@ -30,6 +35,15 @@ public class User {
 
     // Indicates if the user has admin powers (true if they are an admin)
     private Boolean adminPowers;
+
+    // Events associated with the user
+    @ManyToMany
+    @JoinTable(
+            name = "user_events",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "event_id")
+    )
+    private Set<Event> events = new HashSet<>();
 
     /**
      * Default constructor.
@@ -122,6 +136,24 @@ public class User {
      */
     public void setAdminPowers(Boolean adminPowers) {
         this.adminPowers = adminPowers;
+    }
+
+    /**
+     * Gets the events associated with the user.
+     * 
+     * @return the set of events associated with the user
+     */
+    public Set<Event> getEvents() {
+        return events;
+    }
+
+    /**
+     * Sets the events associated with the user.
+     * 
+     * @param events the set of events to set
+     */
+    public void setEvents(Set<Event> events) {
+        this.events = events;
     }
 
     /**
