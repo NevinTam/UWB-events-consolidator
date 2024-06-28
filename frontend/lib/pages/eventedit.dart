@@ -55,7 +55,7 @@ class _EventEditState extends State<EventEdit> {
               ),
             ),
             SizedBox(
-              height: 295,
+              height: 550,
               child: ListView.builder(
                 scrollDirection: Axis.vertical,
                 itemCount: _events.length,
@@ -124,7 +124,7 @@ class _EventEditState extends State<EventEdit> {
   }
 
   Future<void> fetchAllEvents() async {
-    final url = Uri.parse('http://192.168.1.45:8080/user/userEvents/$_userId');
+    final url = Uri.parse('http://192.168.1.45:8080/event/allEvents');
     try {
       final response = await http.get(url);
 
