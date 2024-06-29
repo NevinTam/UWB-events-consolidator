@@ -44,6 +44,7 @@ class EventPage extends StatefulWidget {
   final String image;
   final String navTo;
 
+
   EventPage(
       {super.key,
       required this.title,
@@ -60,8 +61,9 @@ class _EventPageState extends State<EventPage> {
   String time = '';
   bool _isLoading = false;
   String _error = "";
+  final int userId = 5;
 
-  final apiService = ApiService('http://192.168.1.45:8080');
+  final apiService = ApiService('http://192.168.86.234:8080');
 
   @override
   void initState() {
@@ -119,6 +121,7 @@ class _EventPageState extends State<EventPage> {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => HomePage(
                             isAdmin: false,
+                            userId: userId,
                           )));
                 } else if (widget.navTo == 'userEvents') {
                   Navigator.of(context).push(MaterialPageRoute(

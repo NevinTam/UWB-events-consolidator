@@ -31,7 +31,8 @@ Future<List<Event>> _fetchEvents(String jsonString) async {
 // Lines 135 and 147 needs to be updated when the database is updated with URLs rather than image links
 class HomePage extends StatefulWidget {
   final bool isAdmin;
-  HomePage({Key? key, required this.isAdmin}) : super(key: key);
+  final int userId;
+  HomePage({Key? key, required this.isAdmin, required this.userId}) : super(key: key);
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -48,7 +49,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> fetchHomeEvents() async {
-    final url = Uri.parse('http://192.168.1.45:8080/event/homeEvents');
+    final url = Uri.parse('http://192.168.86.234:8080/event/homeEvents');
 
     try {
       final response = await http.get(url);

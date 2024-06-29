@@ -2,7 +2,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class AuthenticationService {
-  static const String baseUrl = 'http://192.168.1.45:8080'; // Connecting to URL
+  static const String baseUrl = 'http://192.168.86.234:8080'; // Connecting to URL
 
   /**
    * Registers a new user or logs in if the user already exists.
@@ -68,13 +68,13 @@ class AuthenticationService {
    * @return A string indicating the result of the login attempt.
    */
   Future<Map<String, dynamic>?> login(String username, String password) async {
+    print("here2");
     final response = await http.get(
       Uri.parse('$baseUrl/user/allUsers'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
     );
-
     if (response.statusCode == 200) {
       List<dynamic> users = jsonDecode(response.body);
       for (var user in users) {

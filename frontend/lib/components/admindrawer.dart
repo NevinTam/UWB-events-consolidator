@@ -10,6 +10,7 @@ import 'package:frontend/pages/admin_console.dart';
 // This widget defines the drawer menu for admin users.
 class AdminDrawer extends StatelessWidget {
   AdminDrawer({super.key});
+  final int userId = 5;
 
   // Creating a common style for the ListTile titles
   TextStyle get listTileStyle => const TextStyle(
@@ -32,6 +33,7 @@ class AdminDrawer extends StatelessWidget {
               // Navigate to the Home page on tap
               Navigator.of(context).pushReplacement(MaterialPageRoute(
                   builder: (context) => HomePage(
+                      userId: userId,
                         isAdmin: true,
                       )));
             },

@@ -19,9 +19,10 @@ class _AdminConsolePageState extends State<AdminConsolePage> {
   bool _isLoading = true;
   String _error = '';
   List<Event> _events = [];
+  final int userId = 5;
 
   // Initialize the ApiService with the base URL
-  final ApiService apiService = ApiService('http://192.168.1.45:8080');
+  final ApiService apiService = ApiService('http://192.168.86.234:8080');
 
   @override
   void initState() {
@@ -59,7 +60,7 @@ class _AdminConsolePageState extends State<AdminConsolePage> {
           onPressed: () {
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => HomePage(isAdmin: false)),
+              MaterialPageRoute(builder: (context) => HomePage(isAdmin: false, userId: userId,)),
             );
           },
         ),
