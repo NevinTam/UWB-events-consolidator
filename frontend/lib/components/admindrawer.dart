@@ -9,8 +9,8 @@ import 'package:frontend/pages/admin_console.dart';
 
 // This widget defines the drawer menu for admin users.
 class AdminDrawer extends StatelessWidget {
-  AdminDrawer({super.key});
-  final int userId = 5;
+  AdminDrawer({super.key, required int this.userId});
+  final int userId;
 
   // Creating a common style for the ListTile titles
   TextStyle get listTileStyle => const TextStyle(
@@ -44,7 +44,7 @@ class AdminDrawer extends StatelessWidget {
             onTap: () {
               // Navigate to the Calendar page on tap
               Navigator.of(context).pushReplacement(MaterialPageRoute(
-                  builder: (context) => const CalendarPage()));
+                  builder: (context) =>  CalendarPage(userId: userId,)));
             },
           ),
           // ListTile for moving to the My Events page
@@ -53,7 +53,7 @@ class AdminDrawer extends StatelessWidget {
             onTap: () {
               // Navigate to the My Events page when tapped
               Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (context) => UserEventsPage()));
+                  MaterialPageRoute(builder: (context) => UserEventsPage(userId: userId,)));
             },
           ),
           // ListTile for moving to the Admin Console page
@@ -62,7 +62,7 @@ class AdminDrawer extends StatelessWidget {
             onTap: () {
               // Navigate to the Admin Console page when tapped
               Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (context) => AdminConsolePage()));
+                  MaterialPageRoute(builder: (context) => AdminConsolePage(userId: userId,)));
             },
           ),
           // ListTile for logging out

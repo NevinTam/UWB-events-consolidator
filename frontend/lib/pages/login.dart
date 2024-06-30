@@ -25,7 +25,6 @@ class _LoginPageState extends State<LoginPage> {
 
   // Function to handle the login process
   void _login() async {
-    print("here");
     // Check if the username or password fields are empty
     if (_usernameController.text.isEmpty || _passwordController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(

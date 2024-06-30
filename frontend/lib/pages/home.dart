@@ -109,14 +109,14 @@ class _HomePageState extends State<HomePage> {
                 context,
                 MaterialPageRoute(
                     builder: (context) =>
-                        EventSearchPage()), // Navigate to EventSearchPage
+                        EventSearchPage(userID: widget.userId,)), // Navigate to EventSearchPage
               );
             },
             color: Color(0xFF4B2E83),
           ),
         ],
       ),
-      drawer: widget.isAdmin ? AdminDrawer() : AppDrawer(),
+      drawer: widget.isAdmin ? AdminDrawer(userId: widget.userId,) : AppDrawer(userId: widget.userId,),
       body: Padding(
         padding: const EdgeInsets.all(10.0),
         child: Column(
@@ -185,6 +185,8 @@ class _HomePageState extends State<HomePage> {
                                 MaterialPageRoute(
                                     builder: (context) => EventPageStatic(
                                           eventId: event["id"],
+                                          userId: widget.userId
+                                      
                                         )), // Navigate to EventEdit
                               );
                             },
@@ -208,7 +210,8 @@ class _HomePageState extends State<HomePage> {
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: (context) => EventPageStatic(
-                eventId: eventId, // Pass the event ID to the EventPage
+                eventId: eventId,
+                userId: widget.userId // Pass the event ID to the EventPage
               ),
             ),
           );

@@ -68,7 +68,6 @@ class AuthenticationService {
    * @return A string indicating the result of the login attempt.
    */
   Future<Map<String, dynamic>?> login(String username, String password) async {
-    print("here2");
     final response = await http.get(
       Uri.parse('$baseUrl/user/allUsers'),
       headers: <String, String>{
