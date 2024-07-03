@@ -21,7 +21,7 @@ class _UserEventsPageState extends State<UserEventsPage> {
   bool _isLoading = false;
   String _error = "";
 
-  final apiService = ApiService('http://192.168.86.234:8080');
+  final apiService = ApiService('http://192.168.1.45:8080');
 
   @override
   void initState() {
@@ -36,7 +36,7 @@ class _UserEventsPageState extends State<UserEventsPage> {
       _error = "";
     });
     try {
-      final url = Uri.parse('http://192.168.86.234:8080/user/userEvents/${widget.userId}');
+      final url = Uri.parse('http://192.168.1.45:8080/user/userEvents/${widget.userId}');
       final response = await http.get(url);
       List<dynamic> events = jsonDecode(response.body);
       setState(() {

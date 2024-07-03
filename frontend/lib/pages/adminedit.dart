@@ -468,7 +468,7 @@ Future<void> editEventDescription(int id, String description) async {
 
 Future<void> editEventName(int id, String newName) async {
   final String url =
-      'http://0.0.0.0:8080/event/editEventName/$id'; //// CHNAGE WITH YOUR IP
+      'http://192.168.1.45/event/editEventName/$id'; //// CHNAGE WITH YOUR IP
 
   try {
     final response = await http.post(

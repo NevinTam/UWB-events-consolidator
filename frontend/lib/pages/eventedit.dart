@@ -126,7 +126,7 @@ class _EventEditState extends State<EventEdit> {
   }
 
   Future<void> fetchAllEvents() async {
-    final url = Uri.parse('http://192.168.86.234:8080/event/allEvents');
+    final url = Uri.parse('http://192.168.1.45:8080/event/allEvents');
     try {
       final response = await http.get(url);
 
