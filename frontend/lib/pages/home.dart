@@ -61,7 +61,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> fetchHomeEvents() async {
-    final url = Uri.parse('http://172.20.10.4:8080/event/homeEvents');
+    final url = Uri.parse('http://192.168.1.45:8080/event/homeEvents');
 
     try {
       final response = await http.get(url);
@@ -136,7 +136,7 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
-      drawer: _isAdmin ? AdminDrawer((userId: widget.userId) : AppDrawer(userId: widget.userId),
+      drawer: _isAdmin ? AdminDrawer(userId: widget.userId) : AppDrawer(userId: widget.userId),
       body: _isLoading
           ? Center(child: CircularProgressIndicator())
           : Padding(
