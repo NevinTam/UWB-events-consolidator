@@ -32,7 +32,8 @@ Future<List<Event>> _fetchEvents(String jsonString) async {
 // Lines 135 and 147 needs to be updated when the database is updated with URLs rather than image links
 class HomePage extends StatefulWidget {
   final bool isAdmin;
-  HomePage({Key? key, required this.isAdmin}) : super(key: key);
+  final int userId;
+  HomePage({Key? key, required this.isAdmin, required this.userId}) : super(key: key);
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -128,14 +129,14 @@ class _HomePageState extends State<HomePage> {
                 context,
                 MaterialPageRoute(
                     builder: (context) =>
-                        EventSearchPage()), // Navigate to EventSearchPage
+                        EventSearchPage(userID: widget.userId,)), // Navigate to EventSearchPage
               );
             },
             color: Color(0xFF4B2E83),
           ),
         ],
       ),
-      drawer: _isAdmin ? AdminDrawer() : AppDrawer(),
+      drawer: _isAdmin ? AdminDrawer((userId: widget.userId) : AppDrawer(userId: widget.userId),
       body: _isLoading
           ? Center(child: CircularProgressIndicator())
           : Padding(
@@ -212,6 +213,7 @@ class _HomePageState extends State<HomePage> {
                                       builder: (context) => EventPageStatic(
                                             eventId: event[
                                                 "id"], // Navigate to EventEdit
+                                             userId: widget.userId
                                           )),
                                 );
                               },
@@ -236,7 +238,8 @@ class _HomePageState extends State<HomePage> {
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: (context) => EventPageStatic(
-                eventId: eventId, // Pass the event ID to the EventPage
+                eventId: eventId,
+                userId: widget.userId // Pass the event ID to the EventPage
               ),
             ),
           );

@@ -74,7 +74,6 @@ class AuthenticationService {
         'Content-Type': 'application/json; charset=UTF-8',
       },
     );
-
     if (response.statusCode == 200) {
       List<dynamic> users = jsonDecode(response.body);
       for (var user in users) {

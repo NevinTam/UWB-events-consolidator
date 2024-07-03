@@ -48,7 +48,8 @@ Future<Map<DateTime, List<Event>>> _fetchEvents() async {
 }
 
 class CalendarPage extends StatefulWidget {
-  const CalendarPage({Key? key}) : super(key: key);
+  final int userId; 
+  const CalendarPage({Key? key, required this.userId}) : super(key: key);
 
   @override
   _CalendarPageState createState() => _CalendarPageState();
@@ -109,7 +110,7 @@ class _CalendarPageState extends State<CalendarPage> {
           },
         ),
       ),
-      drawer: _isAdmin ? AdminDrawer() : AppDrawer(),
+      drawer: _isAdmin ? AdminDrawer(userId: widget.userId) : AppDrawer(userId: widget.userId),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -184,6 +185,7 @@ class _CalendarPageState extends State<CalendarPage> {
                           image: event.image ??
                               '', // Pass event image to EventPage
                           navTo: 'calendar',
+                          userId: widget.userId,
                         ),
                       ),
                     );
