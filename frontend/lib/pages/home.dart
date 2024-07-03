@@ -14,6 +14,7 @@ import './eventsearch.dart';
 import 'dart:convert';
 import 'package:intl/intl.dart';
 import 'package:frontend/pages/login.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 // Async function that parses and filters JSON objects
 Future<List<Event>> _fetchEvents(String jsonString) async {
@@ -40,16 +41,27 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   List<Map<String, dynamic>> _events = [];
-
+  late bool _isAdmin;
+  bool _isLoading = true;
 
   @override
   void initState() {
     super.initState();
+    _loadAdminStatus();
     fetchHomeEvents();
   }
 
+  // Load the admin status from SharedPreferences
+  Future<void> _loadAdminStatus() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _isAdmin =
+          prefs.getBool('isAdmin') ?? false; // Default to false if not found
+    });
+  }
+
   Future<void> fetchHomeEvents() async {
-    final url = Uri.parse('http://192.168.1.45:8080/event/homeEvents');
+    final url = Uri.parse('http://172.20.10.4:8080/event/homeEvents');
 
     try {
       final response = await http.get(url);
@@ -69,18 +81,26 @@ class _HomePageState extends State<HomePage> {
                     'signedUpUsers': event['signedUpUsers'],
                   })
               .toList();
+          _isLoading = false;
         });
       } else {
         print('Failed to fetch events. Status code: ${response.statusCode}');
+        setState(() {
+          _isLoading = false;
+        });
       }
     } catch (e) {
       print('Error fetching events: $e');
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    DateTime today = DateTime.now();;
+    DateTime today = DateTime.now();
+    ;
 
     return Scaffold(
       appBar: AppBar(
@@ -116,88 +136,96 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
-      drawer: widget.isAdmin ? AdminDrawer(userId: widget.userId,) : AppDrawer(userId: widget.userId,),
-      body: Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Center(
-              child: Padding(
-                padding: EdgeInsets.only(bottom: 10),
-                // New events
-                child: Text(
-                  'New This Week: ${today.year}-${today.month}-${today.day}',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                    fontSize: 17,
+      drawer: _isAdmin ? AdminDrawer((userId: widget.userId) : AppDrawer(userId: widget.userId),
+      body: _isLoading
+          ? Center(child: CircularProgressIndicator())
+          : Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Center(
+                    child: Padding(
+                      padding: EdgeInsets.only(bottom: 10),
+                      // New events
+                      child: Text(
+                        'New This Week: ${today.year}-${today.month}-${today.day}',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                          fontSize: 17,
+                        ),
+                      ),
+                    ),
                   ),
-                ),
-              ),
-
-            ),
-            // Featured Events displayed below
-
-              Expanded(
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  children: _events.take(2).map((event) {
-                    return _buildEventCard(context, event['eventName'],
-                        event['image'], event['id']);
-                  }).toList(),
-                ),
-              ),
-            Center(
-              child: Padding(
-                padding: EdgeInsets.only(top: 10),
-                child: Text('Other Events:',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                      fontSize: 17,
-                    )),
-              ),
-            ),
-            Expanded(
-              child: ListView.builder(
-                itemCount: _events.length - 2,
-                itemBuilder: (context, index) {
-                  final event = _events[index + 2];
-                  return Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: TextButton(
-                            child: Text(
-                              '${event['startDate']}: ${event['eventName']}',
-                              textAlign: TextAlign.left,
-                              style: const TextStyle(
-                                fontWeight: FontWeight.w400,
-                                color: Colors.black,
-                                fontSize: 20,
+                  // Featured Events displayed below
+                  Expanded(
+                    child: _events.isNotEmpty
+                        ? ListView(
+                            scrollDirection: Axis.horizontal,
+                            children: _events.take(2).map((event) {
+                              return _buildEventCard(
+                                  context,
+                                  event['eventName'],
+                                  event['image'],
+                                  event['id']);
+                            }).toList(),
+                          )
+                        : Center(
+                            child: Text('No events available'),
+                          ),
+                  ),
+                  Center(
+                    child: Padding(
+                      padding: EdgeInsets.only(top: 10),
+                      child: Text('Other Events:',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                            fontSize: 17,
+                          )),
+                    ),
+                  ),
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: _events.length > 2 ? _events.length - 2 : 0,
+                      itemBuilder: (context, index) {
+                        final event = _events[index + 2];
+                        return Padding(
+                          padding: const EdgeInsets.all(10),
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: TextButton(
+                              child: Text(
+                                '${event['startDate']}: ${event['eventName']}',
+                                textAlign: TextAlign.left,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.w400,
+                                  color: Colors.black,
+                                  fontSize: 20,
+                                ),
                               ),
+                              onPressed: () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                      builder: (context) => EventPageStatic(
+                                            eventId: event[
+                                                "id"], // Navigate to EventEdit
+                                             userId: widget.userId
+                                          )),
+                                );
+                              },
                             ),
-                            onPressed: () {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                    builder: (context) => EventPageStatic(
-                                          eventId: event["id"],
-                                          userId: widget.userId
-                                      
-                                        )), // Navigate to EventEdit
-                              );
-                            },
-                          )));
-                },
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ],
               ),
             ),
-
-          ],
-        ),
-      ),
     );
   }
 
@@ -261,5 +289,3 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
-
-
