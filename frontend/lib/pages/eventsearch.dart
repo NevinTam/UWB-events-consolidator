@@ -28,7 +28,7 @@ class _EventSearchPageState extends State<EventSearchPage> {
 
   // Method to fetch events from the API and set the state
   Future<void> _fetchAndSetEvents() async {
-    final apiService = ApiService('http://192.168.1.45:8080'); // Initialize ApiService with base URL
+    final apiService = ApiService('http://146.190.152.115:8080'); // Initialize ApiService with base URL
     try {
       final data = await apiService.getAllEvents(); // Fetch all events from the API
       final List<dynamic> jsonData = jsonDecode(data); // Decode JSON data from the response
