@@ -56,7 +56,7 @@ class _EventEditState extends State<EventEdit> {
               ),
             ),
             SizedBox(
-              height: 295,
+              height: 550,
               child: ListView.builder(
                 scrollDirection: Axis.vertical,
                 itemCount: _events.length,

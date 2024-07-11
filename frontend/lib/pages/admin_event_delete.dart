@@ -88,13 +88,6 @@ class _AdminEventDeletePageState extends State<AdminEventDeletePage> {
                     );
                   },
                 ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // button logic/ implementation
-        },
-        child: Icon(Icons.add),
-        backgroundColor: Colors.purple,
-      ),
     );
   }
 }
