@@ -1,9 +1,9 @@
 # UW-Bothell Event Consolidator Documentation
 ## Table of Contents
-[Introduction](/Introduction)
-Frontend
-Backend
-Database
+[Introduction](/README.md#1-introduction)
+[Frontend](/README.md#2-frontend)
+[Backend](/README.md#3-backend)
+[Database](/README.md#4-database)
 
 ## 1. Introduction
 ### Purpose and Functionality
@@ -43,7 +43,7 @@ Explore Event Management Features:
 View events, and if you are an admin, access the admin console to manage events.
 	Done!
 
-# 2. Frontend
+## 2. Frontend
 Overview
 Description: Provide a general overview of the frontend, including the technologies and frameworks used (e.g., React, Angular, Vue.js).
 The frontend of our application is built using Flutter. The app features multiple pages including home.dart for the home page, login.dart for user authentication, authentication_service.dart for verifying user credentials and roles, calendar.dart for event management and the calendar page, and user_events.dart for displaying user events. Additionally, there is an admin console page that provides links to various admin functionalities like adding, editing, and deleting content. Components such as admindrawer.dart and drawer.dart offer customized navigation drawers based on admin permissions. The api_service.dart handles API calls by bridging frontend service calls with backend controllers.
@@ -73,7 +73,7 @@ Routing
 Router Setup: Detail the routing setup, including the primary routes and any nested routes.
 Navigation: Explain how navigation is handled within the application.
 
-# 3. Backend
+## 3. Backend
 Overview
 Description: 
 The backend of our Event Consolidator is built using Java Spring Boot, which is the framework used for building our application. Spring Boot allows us to handle all business logic for our database interactions and create API endpoints for our frontend application. We use our backend so we can manage our events, and user authentication for our frontend. 
@@ -147,7 +147,7 @@ GET /user/userEvents/{ID} : Get the events for a user by ID.
 POST /user/addUserToEvent/{userId}/{eventId} : Add a user to an event.
 POST  /user/addUser :  Register a new user.
 
-# 4. Database
+## 4. Database
 Overview
 For our database, we are utilizing PostgreSQL. One of the biggest benefits of PostgreSQL is its ability to create relationships between tables. This feature enables us to efficiently map the relationships between students and events, ensuring accurate and consistent data management.
 Schema
