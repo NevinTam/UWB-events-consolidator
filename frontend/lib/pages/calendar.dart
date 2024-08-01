@@ -41,9 +41,9 @@ class _CalendarPageState extends State<CalendarPage> {
   }
 
   Future<Map<DateTime, List<Event>>> _fetchUserEvents() async {
-    final apiService = ApiService('http://146.190.152.115:8080');
+    final apiService = ApiService('http://128.199.8.191:8080');
     try {
-      final url = Uri.parse('http://146.190.152.115:8080/user/userEvents/${widget.userId}');
+      final url = Uri.parse('http://128.199.8.191:8080/user/userEvents/${widget.userId}');
       final response = await http.get(url);
       final List<dynamic> jsonData = jsonDecode(response.body);
       Map<DateTime, List<Event>> eventsMap = {};

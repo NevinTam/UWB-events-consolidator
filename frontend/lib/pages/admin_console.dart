@@ -23,7 +23,7 @@ class _AdminConsolePageState extends State<AdminConsolePage> {
   List<Event> _events = [];
 
   // Initialize the ApiService with the base URL
-  final ApiService apiService = ApiService('http://146.190.152.115:8080');
+  final ApiService apiService = ApiService('http://128.199.8.191:8080');
 
   @override
   void initState() {
