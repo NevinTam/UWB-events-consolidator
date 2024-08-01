@@ -23,6 +23,7 @@ class _LoginPageState extends State<LoginPage> {
   
   // Boolean to indicate whether a loading indicator should be shown
   bool _isLoading = false;
+  bool _isPasswordVisible = false;
 
   // Function to handle the login process
   void _login() async {
@@ -76,7 +77,7 @@ class _LoginPageState extends State<LoginPage> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
-            "Username doesn't exist. Don't have an account? Register",
+            "Username doesn't exist. Don't have an account? Press 'Register'",
           ),
         ),
       );
@@ -159,7 +160,6 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
               SizedBox(height: 10),
-              // TextField for the password input
               TextField(
                 controller: _passwordController,
                 decoration: InputDecoration(
@@ -167,8 +167,18 @@ class _LoginPageState extends State<LoginPage> {
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(30.0),
                   ),
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      _isPasswordVisible ? Icons.visibility : Icons.visibility_off
+                    ),
+                    onPressed: () {
+                      setState((){
+                        _isPasswordVisible = !_isPasswordVisible;
+                      });
+                    },
+                  ),
                 ),
-                obscureText: true, // Hide the password input
+                obscureText: !_isPasswordVisible, // Hide the password input
               ),
               SizedBox(height: 10),
               // Show a loading indicator or a login button
