@@ -11,7 +11,6 @@ import '../components/drawer.dart';
 import '../components/admindrawer.dart';
 import './event.dart';
 import './eventsearch.dart';
-import 'dart:convert';
 import 'package:intl/intl.dart';
 import 'package:frontend/pages/login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -29,7 +28,6 @@ Future<List<Event>> _fetchEvents(String jsonString) async {
 }
 
 // HomePage represents the main page of the application that has the header, a search button, and a list of featured events.
-// Lines 135 and 147 needs to be updated when the database is updated with URLs rather than image links
 class HomePage extends StatefulWidget {
   final bool isAdmin;
   final int userId;
@@ -293,6 +291,9 @@ class EventListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final dateFormat = DateFormat('M/d/yyyy');
+    final timeFormat = DateFormat('h:mma');
+
     return Scaffold(
       appBar: AppBar(
         title: Text('All Events'),
@@ -301,17 +302,83 @@ class EventListPage extends StatelessWidget {
         itemCount: events.length,
         itemBuilder: (context, index) {
           final event = events[index];
-          return ListTile(
-            title: Text(event['eventName']),
-            subtitle: Text(event['startDate']),
+          final eventDate = dateFormat.format(DateTime.parse(event['startDate']));
+          final formattedTime = '${timeFormat.format(DateTime.parse(event['startDate'])).toLowerCase()} - ${timeFormat.format(DateTime.parse(event['endDate'])).toLowerCase()}';
+          
+          return GestureDetector(
             onTap: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (context) => EventPageStatic(
-                      eventId: event['id'], userId: userId),
+                    eventId: event['id'],
+                    userId: userId, // Pass the event ID to the EventPage
+                  ),
                 ),
               );
             },
+            child: Container(
+              padding: EdgeInsets.all(10),
+              margin: EdgeInsets.symmetric(vertical: 5),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.5),
+                    spreadRadius: 2,
+                    blurRadius: 5,
+                    offset: Offset(0, 3), // changes position of shadow
+                  ),
+                ],
+              ),
+              child: Row(
+                children: [
+                  Container(
+                    width: 100,
+                    height: 100,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      image: DecorationImage(
+                        image: NetworkImage(event['image']),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                  SizedBox(width: 10),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          event['eventName'],
+                          style: TextStyle(
+                            color: Color(0xFF4B2E83),
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
+                        ),
+                        SizedBox(height: 5),
+                        Text(
+                          eventDate,
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 14,
+                          ),
+                        ),
+                        SizedBox(height: 5),
+                        Text(
+                          formattedTime,
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
           );
         },
       ),
